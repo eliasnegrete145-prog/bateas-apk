@@ -1,0 +1,84 @@
+name: Build APK
+
+on:
+  push:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Preparar proyecto
+        run: |
+          cat << 'EOF' > package.json
+          {
+            "name": "bateas-neg",
+            "version": "1.0.0",
+            "private": true,
+            "dependencies": {
+              "@capacitor/android": "^6.1.2",
+              "@capacitor/cli": "^6.1.2",
+              "@capacitor/core": "^6.1.2",
+              "@capacitor/local-notifications": "^6.1.1"
+            }
+          }
+          EOF
+
+          cat << 'EOF' > capacitor.config.json
+          {
+            "appId": "com.ladoneg.bateas",
+            "appName": "Bateas NEG",
+            "webDir": "www"
+          }
+          EOF
+
+          mkdir -p www
+          cp *.html www/index.html
+
+      - name: Instalar y configurar Android
+        run: |
+          npm install
+          npx cap add android
+
+          # Permiso nativo para activar el botón en Android 13+
+          MANIFEST="android/app/src/main/AndroidManifest.xml"
+          PERMS='    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />\n    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />\n    <uses-permission android:name="android.permission.WAKE_LOCK" />\n    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />'
+          sed -i "/<uses-permission android:name=\"android.permission.INTERNET\" \/>/a $PERMS" "$MANIFEST"
+
+      - name: Generar iconos de la app
+        run: |
+          python3 -c "
+          import os, glob
+          from PIL import Image
+          icons = glob.glob('*.png')
+          if icons:
+              img = Image.open(icons[0])
+              sizes = {'mipmap-mdpi': 48, 'mipmap-hdpi': 72, 'mipmap-xhdpi': 96, 'mipmap-xxhdpi': 144, 'mipmap-xxxhdpi': 192}
+              for folder, sz in sizes.items():
+                  target = os.path.join('android/app/src/main/res', folder)
+                  os.makedirs(target, exist_ok=True)
+                  resized = img.resize((sz, sz), Image.Resampling.LANCZOS)
+                  resized.save(os.path.join(target, 'ic_launcher.png'))
+                  resized.save(os.path.join(target, 'ic_launcher_round.png'))
+          " || true
+
+      - name: Sincronizar y compilar APK
+        run: |
+          npx cap sync android
+          cd android && chmod +x gradlew && ./gradlew assembleDebug
+
+      - name: Subir APK listo
+        uses: actions/upload-artifact@v4
+        with:
+          name: Bateas-NEG-APK
+          path: android/app/build/outputs/apk/debug/app-debug.apk
