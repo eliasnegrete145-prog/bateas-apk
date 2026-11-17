@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bateas NEG</title>
+<meta name="theme-color" content="#0b1428">
+<script>try{var t=localStorage.getItem('tema');document.documentElement.dataset.theme=t||(matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light')}catch(e){}</script>
+<style>
+:root{--bg:#eef2f8;--card:#fff;--text:#0e1726;--muted:#5a6a85;--line:#d9e1ee;--inp:#f3f6fb;--accent:#f59e0b;--ok:#15803d;--okbg:#dcfce7;--wa:#b45309;--wabg:#fef3c7;--ba:#b91c1c;--babg:#fee2e2;--bl:#1d4ed8;--blbg:#dbeafe;--pu:#7e22ce;--pubg:#f3e8ff}
+:root[data-theme=dark]{--bg:#070d1a;--card:#121c33;--text:#e8eefb;--muted:#92a2c2;--line:#25324f;--inp:#0b1427;--ok:#4ade80;--okbg:#0f3a22;--wa:#fbbf24;--wabg:#3b2a07;--ba:#fb7185;--babg:#401320;--bl:#7dd3fc;--blbg:#0c2c44;--pu:#d8b4fe;--pubg:#2d1650}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html{color-scheme:light dark}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.35 system-ui,Roboto,'Segoe UI',sans-serif;padding:calc(10px + env(safe-area-inset-top,0px)) 12px calc(96px + env(safe-area-inset-bottom,0px));overscroll-behavior-y:none;touch-action:manipulation}
+.wrap{max-width:900px;margin:auto}
+header{display:flex;align-items:center;gap:12px;background:linear-gradient(120deg,#0b1428,#1d3566);color:#fff;padding:10px 12px;border-radius:18px;margin-bottom:12px}
+.ttl{flex:1;min-width:0}h1{margin:0;font-size:1.2rem}.sub{font-size:.78rem;color:#a9bbdc}#fecha{font-size:.78rem;color:#cfdcf5;text-transform:capitalize}
+.ic{width:46px;height:46px;border-radius:14px;border:1px solid #fff3;background:#fff1;color:#fff;font-size:1.3rem;position:relative}
+.dot{position:absolute;top:-4px;right:-4px;min-width:20px;height:20px;border-radius:10px;background:#ef4444;font-size:.7rem;font-weight:700;display:none;align-items:center;justify-content:center;padding:0 5px}.dot.on{display:flex}
+.scene{width:96px;height:72px;perspective:500px;flex:none;position:relative}
+.scene::after{content:"";position:absolute;left:8px;right:8px;bottom:2px;height:8px;border-radius:50%;background:#0006;filter:blur(3px)}
+.box{position:absolute;left:6px;top:14px;width:84px;height:40px;transform-style:preserve-3d;animation:spin 14s linear infinite;will-change:transform}
+@keyframes spin{from{transform:rotateX(-24deg) rotateY(0)}to{transform:rotateX(-24deg) rotateY(360deg)}}
+.f{position:absolute;display:flex;align-items:flex-end;justify-content:center;font:800 12px/1 system-ui,sans-serif;letter-spacing:.14em;color:#f8fafc;text-shadow:0 1px 1px #0009;border-top:3px solid #d5dbe2;padding-bottom:3px;top:0}
+.fr,.bk{width:84px;height:40px;left:0;background:linear-gradient(#b9c1ca 56%,#88929d 56%)}.fr{transform:translateZ(22px)}.bk{transform:rotateY(180deg) translateZ(22px)}
+.lf,.rt{width:44px;height:40px;left:20px;background:linear-gradient(#a9b1ba 56%,#79838e 56%)}.lf{transform:rotateY(-90deg) translateZ(42px)}.rt{transform:rotateY(90deg) translateZ(42px)}
+.tp,.bt{width:84px;height:44px;left:0;top:-2px}.tp{transform:rotateX(90deg) translateZ(20px);background:#262b31;border:3px solid #cfd5dc;box-shadow:inset 0 0 12px #000}.bt{transform:rotateX(-90deg) translateZ(20px);background:#59616a}
+.stats{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x proximity;margin:0 -12px 12px;padding:0 12px 4px;scrollbar-width:none}.stats::-webkit-scrollbar{display:none}
+.st{flex:none;min-width:116px;scroll-snap-align:start;background:var(--card);border:1px solid var(--line);border-left:5px solid var(--c);border-radius:14px;padding:9px 12px}
+.st small{display:block;color:var(--muted);font-size:.72rem}.st b{font-size:1.35rem;color:var(--c2,var(--text))}
+.avisos{display:none;background:var(--babg);border:1px solid var(--ba);border-left-width:6px;border-radius:14px;padding:10px 14px;margin-bottom:12px;color:var(--text)}.avisos.on{display:block}.avisos ul{margin:6px 0 0;padding-left:18px;font-size:.86rem}
+.filters{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:12px}.filters input{grid-column:1/-1}
+label{display:block;font-size:.78rem;font-weight:600;color:var(--muted);margin-bottom:4px}
+input,select{width:100%;min-height:46px;padding:9px 12px;border:1px solid var(--line);border-radius:12px;font:inherit;font-size:16px;background:var(--inp);color:var(--text)}
+input:focus,select:focus{outline:2px solid var(--accent);border-color:transparent}
+button{font:inherit;font-weight:600;cursor:pointer;color:var(--text)}
+.list{display:grid;grid-template-columns:repeat(auto-fill,minmax(290px,1fr));gap:10px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;border-left:5px solid var(--line)}
+.card.lr{border-left-color:#ef4444}.card.la{border-left-color:#f59e0b}.card.lg{border-left-color:#22c55e}
+.top{display:flex;align-items:center;gap:6px;flex-wrap:wrap}.bid{font-size:1.25rem;margin-right:auto}
+.cli{font-weight:600;margin:6px 0 2px}.row{font-size:.86rem;margin:3px 0;display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.badge{padding:3px 10px;border-radius:999px;font-size:.72rem;font-weight:700;white-space:nowrap}
+.tipo-basura,.pago-sena{background:var(--wabg);color:var(--wa)}.tipo-escombro,.est-entrega,.venc-p{background:var(--blbg);color:var(--bl)}
+.est-obra,.pago-pagado,.venc-1{background:var(--okbg);color:var(--ok)}.est-retirar,.pago-pendiente,.venc-3{background:var(--babg);color:var(--ba)}
+.est-basural{background:var(--pubg);color:var(--pu)}.venc-2{background:var(--wabg);color:var(--wa)}.venc-x{background:#e11d48;color:#fff}.venc-n{background:var(--inp);color:var(--muted)}
+.precio{font-size:1.05rem;font-weight:800}small{color:var(--muted)}
+.seg{display:flex;gap:4px;margin:8px 0 4px}.seg i{flex:1;height:6px;border-radius:3px;background:var(--line)}.lg .seg i.on{background:#22c55e}.la .seg i.on{background:#f59e0b}.lr .seg i.on{background:#ef4444}
+.acts{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-top:8px}
+.acts button{min-height:50px;border:1px solid var(--line);background:var(--inp);border-radius:12px;font-size:.66rem;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px}.acts button span{font-size:1.15rem}.acts button:active{transform:scale(.95)}
+.empty{text-align:center;color:var(--muted);padding:26px}
+.neg{margin:22px auto 0;width:min(260px,70%);text-align:center;font:800 1.5rem/1 system-ui;letter-spacing:.3em;padding:14px 0 12px 8px;color:#f8fafc;border-radius:6px 6px 14px 14px;border-top:5px solid #d5dbe2;background:linear-gradient(#b9c1ca 50%,#7b858f 50%);text-shadow:0 1px 2px #0009}
+.fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));width:60px;height:60px;border-radius:50%;border:0;background:linear-gradient(#fcd34d,#f59e0b);color:#2b1700;font-size:2rem;box-shadow:0 8px 20px -6px #f59e0bcc;z-index:20}.fab:active{transform:scale(.93)}
+.btn{min-height:48px;border-radius:12px;border:1px solid var(--line);background:var(--inp);padding:0 16px}.btn.pri{background:linear-gradient(#fcd34d,#f59e0b);color:#2b1700;border:0}.btn.bad{background:#e11d48;color:#fff;border:0}
+.mbg{position:fixed;inset:0;background:#030814a0;display:none;align-items:flex-end;justify-content:center;z-index:50}.mbg.on{display:flex}
+.modal{width:100%;max-width:560px;max-height:92vh;overflow:auto;background:var(--card);border-radius:22px 22px 0 0;padding:18px 16px calc(16px + env(safe-area-inset-bottom,0px));animation:up .25s ease-out}
+@keyframes up{from{transform:translateY(60px);opacity:0}}
+.modal h3{margin:0 0 12px}.fg{display:grid;grid-template-columns:1fr 1fr;gap:10px}.full{grid-column:1/-1}.g2{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.mrow{display:flex;gap:10px;justify-content:flex-end;margin-top:16px;position:sticky;bottom:0}.mrow .btn{flex:1}
+.mapa{position:relative;height:270px;border-radius:14px;overflow:hidden;border:1px solid var(--line);margin-bottom:12px;background:var(--inp)}.mapa svg,.mapa iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.blkmsg{display:none;position:absolute;inset:0;align-items:center;justify-content:center;text-align:center;padding:16px;background:var(--inp);color:var(--text);font-size:.86rem;line-height:1.35}.blk .blkmsg{display:flex}.blk iframe{display:none}
+.pin{animation:bote 1.4s ease-in-out infinite}@keyframes bote{50%{transform:translateY(-8px)}}
+.toasts{position:fixed;left:12px;right:90px;bottom:calc(20px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:6px;z-index:60;pointer-events:none}
+.toast{background:#0b1428;color:#fff;padding:11px 14px;border-radius:12px;font-size:.86rem;animation:up .25s}
+.note{font-size:.78rem;color:var(--muted)}
+.mbg.on~.toasts{top:calc(14px + env(safe-area-inset-top,0px));bottom:auto;left:12px;right:12px}
+.avbar{display:flex;align-items:center;gap:12px;background:var(--card);border:1px solid var(--line);border-radius:14px;padding:10px 12px;margin-bottom:12px}
+.avbar .tx{flex:1;min-width:0}.avbar b{display:block;font-size:.92rem}.avbar small{display:block;color:var(--muted);font-size:.74rem;line-height:1.25}
+.tg{position:relative;display:inline-block;width:58px;height:34px;flex:none}.tg input{position:absolute;inset:0;width:100%;height:100%;min-height:0;margin:0;padding:0;border:0;opacity:0;z-index:1;cursor:pointer}
+.tg span{position:absolute;inset:0;border-radius:17px;background:var(--line);transition:background .2s}.tg span::after{content:"";position:absolute;left:4px;top:4px;width:26px;height:26px;border-radius:50%;background:#fff;box-shadow:0 1px 4px #0005;transition:transform .2s}
+.tg input:checked+span{background:#22c55e}.tg input:checked+span::after{transform:translateX(24px)}
+@media(prefers-reduced-motion:reduce){*{animation:none!important}}
+</style>
+</head>
+<body>
+<div class="wrap">
+<header>
+<div class="scene"><div class="box"><div class="f fr">NEG</div><div class="f bk">NEG</div><div class="f lf">NEG</div><div class="f rt">NEG</div><div class="f tp"></div><div class="f bt"></div></div></div>
+<div class="ttl"><h1>Panel de Bateas</h1><span class="sub">Entregas, retiros y cobros</span><div id="fecha"></div></div>
+<button class="ic" id="bAjustes" aria-label="Ajustes y avisos">⚙️<span class="dot" id="dot"></span></button>
+</header>
+<div class="avbar"><div class="tx"><b class="avT">🔕 Avisos de vencimiento</b><small class="avS">Desactivados</small></div><label class="tg"><input type="checkbox" class="swAv" onchange="toggleAvisos(this.checked)" aria-label="Activar avisos de vencimiento"><span></span></label></div>
+<div class="avisos" id="avisos" role="alert"></div>
+<div class="stats">
+<div class="st" style="--c:#3b82f6"><small>Para entregar</small><b id="cEnt">0</b></div>
+<div class="st" style="--c:#22c55e"><small>En calle / obra</small><b id="cObr">0</b></div>
+<div class="st" style="--c:#ef4444"><small>Para buscar</small><b id="cRet">0</b></div>
+<div class="st" style="--c:#a855f7"><small>Al basural</small><b id="cBas">0</b></div>
+<div class="st" style="--c:#22c55e;--c2:var(--ok)"><small>Total cobrado</small><b id="tCob">$0</b></div>
+<div class="st" style="--c:#f59e0b;--c2:var(--wa)"><small>Por cobrar</small><b id="tPen">$0</b></div>
+</div>
+<div class="filters">
+<input id="fTxt" type="search" placeholder="🔍 Buscar calle, batea o cliente">
+<select id="fEst"><option value="TODOS">Todas las operaciones</option><option>Para Entregar</option><option>En Calle</option><option>Para Buscar</option><option>Vaciar en Basural</option></select>
+<select id="fPag"><option value="TODOS">Todos los pagos</option><option value="Pendiente">🔴 Pendientes</option><option value="Señado">🟡 Señados</option><option value="Pagado">🟢 Pagados</option></select>
+</div>
+<div class="list" id="lista"></div>
+<div class="empty" id="vacio" hidden>No hay pedidos que coincidan.</div>
+<div class="neg">NEG</div>
+</div>
+<button class="fab" id="fab" aria-label="Nuevo pedido">＋</button>
+<input type="file" id="fImp" accept="application/json" hidden>
+<div class="mbg" id="modal"><div class="modal" role="dialog" aria-modal="true"><h3 id="mT"></h3><div id="mB"></div><div class="mrow" id="mA"></div></div></div>
+<div class="toasts" id="toasts"></div>
+<script>
+const $=id=>document.getElementById(id),LN=()=>window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.LocalNotifications;
+const ls={get(k){try{return localStorage.getItem(k)}catch(e){return null}},set(k,v){try{localStorage.setItem(k,v)}catch(e){}}};
+const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const moneda=v=>'$'+Number(v||0).toLocaleString('es-AR');
+const ESTADOS=['Para Entregar','En Calle','Para Buscar','Vaciar en Basural'],PAGOS=['Pendiente','Señado','Pagado'];
+function fechaOffset(n){const d=new Date();d.setDate(d.getDate()-n);return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+const hoyISO=()=>fechaOffset(0),fechaCorta=f=>f.split('-').reverse().join('/');
+/* ---- datos ---- */
+let cfg={tb:45000,te:55000,ciudad:'Comodoro Rivadavia, Chubut',hora:'08:00',avisos:false};
+try{Object.assign(cfg,JSON.parse(ls.get('cfgBateas')||'{}'))}catch(e){}
+if(!ls.get('cfgBateas')){cfg.tb=+ls.get('tarifaBasura')||cfg.tb;cfg.te=+ls.get('tarifaEscombro')||cfg.te;cfg.ciudad=ls.get('ciudad')||cfg.ciudad}
+function setCfg(k,v){cfg[k]=(k==='tb'||k==='te')?Number(v)||0:v;ls.set('cfgBateas',JSON.stringify(cfg));if(k==='hora'){uiAvisos();programar();tick()}}
+let pedidos=[];try{pedidos=JSON.parse(ls.get('pedidosBateasV2')||'[]')}catch(e){}
+if(!Array.isArray(pedidos)||!pedidos.length)pedidos=[
+{id:1,batea:'B-04',cliente:'Constructora Sur',calle:'Av. San Martín 820',horaEntrega:'08:30',horaRetiro:'17:00',tipoCarga:'Escombro',precio:55000,estadoPago:'Pagado',medioPago:'Transferencia',estado:'En Calle',fechaEntrega:fechaOffset(2)},
+{id:2,batea:'B-11',cliente:'Comercio Centro',calle:'Calle Mitre 415',horaEntrega:'10:00',horaRetiro:'18:30',tipoCarga:'Basura',precio:45000,estadoPago:'Pendiente',medioPago:'Efectivo',estado:'Para Buscar',fechaEntrega:fechaOffset(1)}];
+pedidos.forEach(p=>{if(!p.fechaEntrega)p.fechaEntrega=hoyISO()});
+function persistir(){ls.set('pedidosBateasV2',JSON.stringify(pedidos));render();programar()}
+/* ---- vencimiento (servicio de 3 días) ---- */
+function diaServicio(p){if(!p.fechaEntrega)return null;const [y,m,d]=p.fechaEntrega.split('-').map(Number),h=new Date();return Math.round((new Date(h.getFullYear(),h.getMonth(),h.getDate())-new Date(y,m-1,d))/864e5)+1}
+function venc(p){if(p.estado==='Vaciar en Basural')return{c:'venc-n',t:'Finalizado',n:0};const n=diaServicio(p);
+if(n===null)return{c:'venc-n',t:'Sin fecha',n:0};if(n<1)return{c:'venc-p',t:'Programado',n:0};
+if(n===1)return{c:'venc-1',t:'🟢 Día 1 de 3',n};if(n===2)return{c:'venc-2',t:'🟡 Día 2 · vence mañana',n};
+if(n===3)return{c:'venc-3',t:'🔴 Día 3 · retirar hoy',n};return{c:'venc-x',t:'⛔ Vencido hace '+(n-3)+(n===4?' día':' días'),n}}
+/* ---- avisos / notificaciones ----
+   Motores (se elige solo): cap = Capacitor LocalNotifications, cor = Cordova local-notification,
+   web = API Notification del navegador, none = modo básico (en pantalla, con la app abierta) */
+const CAP=()=>window.Capacitor&&Capacitor.Plugins&&Capacitor.Plugins.LocalNotifications;
+const COR=()=>window.cordova&&cordova.plugins&&cordova.plugins.notification&&cordova.plugins.notification.local;
+function motor(){return CAP()?'cap':COR()?'cor':('Notification' in window)?'web':'none'}
+const MOTOR_TXT={cap:'Nativo · suenan con la app cerrada',cor:'Nativo · suenan con la app cerrada',web:'Navegador · solo con la app abierta',none:'Básico · en pantalla, con la app abierta'};
+const PERM_TXT={granted:'concedido',denied:'denegado',prompt:'sin pedir',none:'no aplica'};
+function toast(m){const t=document.createElement('div');t.className='toast';t.textContent=m;$('toasts').appendChild(t);setTimeout(()=>t.remove(),4500)}
+function beep(){try{const a=new(window.AudioContext||window.webkitAudioContext)(),o=a.createOscillator(),g=a.createGain();o.frequency.value=880;g.gain.setValueAtTime(.001,a.currentTime);g.gain.exponentialRampToValueAtTime(.4,a.currentTime+.02);g.gain.exponentialRampToValueAtTime(.001,a.currentTime+.6);o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.65)}catch(e){}}
+function alertaLocal(t,b){toast(t+(b?' · '+b:''));beep();try{navigator.vibrate&&navigator.vibrate([250,120,250,120,400])}catch(e){}}
+/* eventos de aviso: día 2 (vence mañana), día 3 (retirar hoy) y cada día vencida */
+function eventos(todos){const [h,m]=(cfg.hora||'08:00').split(':').map(Number),now=Date.now(),out=[];
+pedidos.filter(p=>p.estado!=='Vaciar en Basural'&&p.fechaEntrega).forEach(p=>{const [y,mo,d]=p.fechaEntrega.split('-').map(Number);
+for(let n=2;n<=9;n++){const at=new Date(y,mo-1,d+n-1,h,m);if(!todos&&at.getTime()<=now)continue;
+const t=n===2?'Mañana vence el servicio':n===3?'Vence HOY: retirar':'VENCIDA hace '+(n-3)+(n===4?' día':' días');
+out.push({key:p.id+':'+n,at,title:'🔔 '+p.batea+' · '+t,body:p.cliente+' · '+p.calle,p,n})}});
+return out.sort((a,b)=>a.at-b.at).slice(0,60)}
+const M={
+async permiso(){const k=motor();try{
+if(k==='cap')return(await CAP().checkPermissions()).display;
+if(k==='cor')return await new Promise(ok=>COR().hasPermission(g=>ok(g?'granted':'prompt')));
+if(k==='web')return Notification.permission==='default'?'prompt':Notification.permission}catch(e){}return 'none'},
+async pedir(){const k=motor();try{
+if(k==='cap'){const r=await CAP().requestPermissions();if(r.display==='granted')await CAP().createChannel({id:'vencimientos',name:'Vencimientos de servicio',description:'Bateas por vencer o vencidas',importance:5,visibility:1,vibration:true}).catch(()=>{});return r.display}
+if(k==='cor')return await new Promise(ok=>COR().requestPermission(g=>ok(g?'granted':'denied')));
+if(k==='web'){const r=await Notification.requestPermission();return r==='default'?'prompt':r}}catch(e){}return 'none'},
+async cancelar(){const k=motor();try{
+if(k==='cap'){const pe=await CAP().getPending();if(pe.notifications.length)await CAP().cancel({notifications:pe.notifications.map(n=>({id:n.id}))})}
+else if(k==='cor')COR().cancelAll(()=>{})}catch(e){}},
+async programar(ev){const k=motor();if(k!=='cap'&&k!=='cor')return 0;try{await this.cancelar();
+if(k==='cap'&&ev.length)await CAP().schedule({notifications:ev.map((e,i)=>({id:i+1,title:e.title,body:e.body,schedule:{at:e.at,allowWhileIdle:true},channelId:'vencimientos'}))});
+if(k==='cor'&&ev.length)COR().schedule(ev.map((e,i)=>({id:i+1,title:e.title,text:e.body,trigger:{at:e.at},vibrate:true,foreground:true})));
+return ev.length}catch(e){return -1}},
+async probar(){const k=motor(),t='🔔 Aviso de prueba',b='Las alertas de vencimiento funcionan.',at=new Date(Date.now()+3000);
+if(k==='cap')await CAP().schedule({notifications:[{id:999999,title:t,body:b,schedule:{at},channelId:'vencimientos'}]});
+else if(k==='cor')COR().schedule({id:999999,title:t,text:b,trigger:{at},vibrate:true,foreground:true});
+else{if(k==='web'&&Notification.permission==='granted')try{new Notification(t,{body:b})}catch(e){}alertaLocal(t,b)}}};
+function saveCfg(){ls.set('cfgBateas',JSON.stringify(cfg))}
+async function programar(){if(!cfg.avisos)return;const n=await M.programar(eventos());diag();return n}
+function uiAvisos(){document.querySelectorAll('.swAv').forEach(x=>x.checked=!!cfg.avisos);
+document.querySelectorAll('.avT').forEach(x=>x.textContent=(cfg.avisos?'🔔':'🔕')+' Avisos de vencimiento');
+document.querySelectorAll('.avS').forEach(x=>x.textContent=cfg.avisos?'Activados · '+MOTOR_TXT[motor()]+' · '+cfg.hora:'Desactivados · prendé el interruptor para recibir alertas')}
+async function diag(){const el=$('avDiag');if(!el)return;const k=motor(),p=k==='none'?'none':await M.permiso();let n='';
+try{if(k==='cap')n=' · <b>Programados:</b> '+(await CAP().getPending()).notifications.length}catch(e){}
+el.innerHTML='Avisa el día 2 (vence mañana), el día 3 (retirar hoy) y cada día mientras siga vencida.<br><b>Motor:</b> '+MOTOR_TXT[k]+' · <b>Permiso:</b> '+(PERM_TXT[p]||p)+n+(k==='none'||k==='web'?'<br>Este modo avisa solo con la app abierta. Para avisos con la app cerrada hace falta compilar con el proyecto incluido (LEEME.md).':'')}
+async function toggleAvisos(on){
+if(!on){cfg.avisos=false;saveCfg();await M.cancelar();uiAvisos();diag();toast('Avisos desactivados');return}
+const k=motor();let p='none';if(k!=='none'){p=await M.permiso();if(p!=='granted')p=await M.pedir()}
+if(k!=='none'&&p!=='granted'){cfg.avisos=false;saveCfg();uiAvisos();diag();toast('Permiso denegado. Activalo en Ajustes del celular > Apps > Notificaciones.');return}
+cfg.avisos=true;saveCfg();uiAvisos();const n=await M.programar(eventos());diag();
+toast('Avisos activados ✔'+(n>0?' · '+n+' programados':k==='none'?' (modo básico)':''));tick()}
+async function probar(){try{await M.probar();if(motor()==='cap'||motor()==='cor')toast('Te llega en 3 segundos…')}catch(e){toast('No se pudo enviar el aviso de prueba.')}}
+/* motores sin programación nativa (web / básico): revisa cada 30 s si ya toca avisar */
+function tick(){if(!cfg.avisos||motor()==='cap'||motor()==='cor')return;
+let hechos=[];try{hechos=JSON.parse(ls.get('avHechos')||'[]')}catch(e){}const now=Date.now(),h0=new Date();h0.setHours(0,0,0,0);const por={};
+eventos(true).forEach(e=>{if(e.at.getTime()<=now&&e.at>=h0&&!hechos.includes(e.key))por[e.p.id]=e});
+Object.values(por).forEach(e=>{hechos.push(e.key);
+if(motor()==='web'&&Notification.permission==='granted')try{new Notification(e.title,{body:e.body})}catch(x){}
+alertaLocal(e.title,e.body)});
+if(Object.keys(por).length)ls.set('avHechos',JSON.stringify(hechos.slice(-200)))}
+function avisos(){
+const l=pedidos.filter(p=>venc(p).n>=2).sort((a,b)=>venc(b).n-venc(a).n),box=$('avisos'),dot=$('dot');
+dot.textContent=l.length;dot.classList.toggle('on',l.length>0);
+if(!l.length){box.classList.remove('on');return}
+box.innerHTML='<strong>🔔 '+l.length+' servicio(s) por vencer o vencidos</strong><ul>'+l.map(p=>'<li><b>'+esc(p.batea)+'</b> · '+esc(p.cliente)+' · '+esc(p.calle)+'<br><b>'+venc(p).t+'</b></li>').join('')+'</ul>';
+box.classList.add('on')}
+/* ---- modal tipo hoja inferior (el botón Atrás del celular lo cierra) ---- */
+let mOpen=false;
+function abrir(t,html,btns){$('mT').textContent=t;$('mB').innerHTML=html;const a=$('mA');a.innerHTML='';
+btns.forEach(b=>{const x=document.createElement('button');x.type='button';x.className='btn '+(b.cls||'');x.textContent=b.txt;x.onclick=()=>{if(b.fn&&b.fn()===false)return;cerrar()};a.appendChild(x)});
+$('modal').classList.add('on');if(!mOpen){history.pushState({m:1},'');mOpen=true}}
+function cerrar(){$('modal').classList.remove('on');if(mOpen){mOpen=false;history.back()}}
+addEventListener('popstate',()=>{if(mOpen){mOpen=false;$('modal').classList.remove('on')}});
+$('modal').addEventListener('click',e=>{if(e.target.id==='modal')cerrar()});
+/* ---- pantallas ---- */
+const opt=(a,v)=>a.map(x=>'<option'+(x===v?' selected':'')+'>'+x+'</option>').join('');
+function nuevo(){abrir('➕ Nuevo pedido','<form id="pf" class="fg" onsubmit="return false">'+
+'<div><label>N° Batea</label><input name="batea" placeholder="B-14" required></div><div><label>Cliente / Obra</label><input name="cliente" required></div>'+
+'<div class="full"><label>Calle y altura</label><input name="calle" placeholder="Av. Rivadavia 1450" required></div>'+
+'<div><label>Hora entrega</label><input type="time" name="he" required></div><div><label>Hora retiro</label><input type="time" name="hr" required></div>'+
+'<div><label>Tipo de carga</label><select name="tipo" onchange="this.form.precio.value=this.value===\'Basura\'?cfg.tb:cfg.te"><option value="Basura">🗑️ Basura</option><option value="Escombro">🧱 Escombro</option></select></div>'+
+'<div><label>Precio ($)</label><input type="number" inputmode="numeric" name="precio" min="0" step="100" value="'+cfg.tb+'" required></div>'+
+'<div><label>Estado de pago</label><select name="pago"><option value="Pendiente">🔴 Pendiente</option><option value="Señado">🟡 Señado (50%)</option><option value="Pagado">🟢 Pagado</option></select></div>'+
+'<div><label>Medio de pago</label><select name="medio"><option>Efectivo</option><option>Transferencia</option><option>Cuenta Corriente</option></select></div>'+
+'<div><label>Operación</label><select name="estado">'+opt(ESTADOS)+'</select></div><div><label>Fecha de entrega</label><input type="date" name="fecha" value="'+hoyISO()+'" required></div></form>',
+[{txt:'Cancelar'},{txt:'Guardar',cls:'pri',fn:()=>{const f=$('pf');if(!f.reportValidity())return false;const e=f.elements;
+pedidos.unshift({id:Date.now(),batea:e.batea.value.trim(),cliente:e.cliente.value.trim(),calle:e.calle.value.trim(),horaEntrega:e.he.value,horaRetiro:e.hr.value,tipoCarga:e.tipo.value,precio:Number(e.precio.value),estadoPago:e.pago.value,medioPago:e.medio.value,estado:e.estado.value,fechaEntrega:e.fecha.value||hoyISO()});
+persistir();toast('Pedido guardado')}}])}
+function ajustes(){abrir('⚙️ Ajustes y avisos','<div class="fg"><div><label>Tarifa Basura ($)</label><input type="number" inputmode="numeric" value="'+cfg.tb+'" onchange="setCfg(\'tb\',this.value)"></div>'+
+'<div><label>Tarifa Escombro ($)</label><input type="number" inputmode="numeric" value="'+cfg.te+'" onchange="setCfg(\'te\',this.value)"></div>'+
+'<div><label>Ciudad (mapas)</label><input value="'+esc(cfg.ciudad)+'" onchange="setCfg(\'ciudad\',this.value)"></div>'+
+'<div><label>Hora del aviso diario</label><input type="time" value="'+cfg.hora+'" onchange="setCfg(\'hora\',this.value)"></div></div>'+
+'<div class="avbar" style="margin:12px 0 0"><div class="tx"><b class="avT"></b><small class="avS"></small></div><label class="tg"><input type="checkbox" class="swAv" onchange="toggleAvisos(this.checked)" aria-label="Activar avisos de vencimiento"><span></span></label></div>'+
+'<p class="note" id="avDiag" style="margin:8px 2px"></p>'+
+'<div class="g2"><button class="btn pri" onclick="probar()">🧪 Probar aviso</button><button class="btn" onclick="tema()">🌓 Tema</button><button class="btn" onclick="exportar()">💾 Copia</button><button class="btn" onclick="$(\'fImp\').click()">📂 Restaurar</button></div>',[{txt:'Cerrar'}]);uiAvisos();diag()}
+function tema(){const r=document.documentElement,t=r.dataset.theme==='dark'?'light':'dark';r.dataset.theme=t;ls.set('tema',t)}
+async function exportar(){const n='bateas-copia-'+hoyISO()+'.json',f=new File([JSON.stringify({pedidos,cfg},null,1)],n,{type:'application/json'});
+try{if(navigator.canShare&&navigator.canShare({files:[f]})){await navigator.share({files:[f],title:n});return}}catch(e){if(e.name==='AbortError')return}
+const a=document.createElement('a');a.href=URL.createObjectURL(f);a.download=n;document.body.appendChild(a);a.click();a.remove();toast('Copia guardada')}
+$('fImp').addEventListener('change',e=>{const f=e.target.files[0];if(!f)return;const r=new FileReader();r.onload=()=>{try{const d=JSON.parse(r.result);if(!Array.isArray(d.pedidos))throw 0;pedidos=d.pedidos;
+if(d.cfg)Object.assign(cfg,d.cfg);else{if(d.tarifaBasura)cfg.tb=+d.tarifaBasura;if(d.tarifaEscombro)cfg.te=+d.tarifaEscombro;if(d.ciudad)cfg.ciudad=d.ciudad}
+ls.set('cfgBateas',JSON.stringify(cfg));persistir();toast('Copia restaurada')}catch(x){toast('El archivo no es una copia válida.')}e.target.value=''};r.readAsText(f)});
+function precioDlg(p){abrir('Modificar precio','<label>'+esc(p.batea)+' · '+esc(p.cliente)+' ($)</label><input id="mP" type="number" inputmode="numeric" min="0" step="100" value="'+(Number(p.precio)||0)+'">',
+[{txt:'Cancelar'},{txt:'Guardar',cls:'pri',fn:()=>{const v=$('mP').value;if(v.trim()===''||!(Number(v)>=0)){toast('Ingresá un importe válido.');return false}p.precio=Number(v);persistir();toast('Precio actualizado')}}])}
+function eliminarDlg(p){abrir('Eliminar pedido','<p style="margin:0">¿Eliminar la batea <b>'+esc(p.batea)+'</b> de '+esc(p.cliente)+'? No se puede deshacer.</p>',
+[{txt:'Cancelar'},{txt:'Sí, eliminar',cls:'bad',fn:()=>{pedidos=pedidos.filter(x=>x.id!==p.id);persistir();toast('Pedido eliminado')}}])}
+let CSP=false;
+document.addEventListener('securitypolicyviolation',e=>{if(/frame|child|connect|default/.test(e.effectiveDirective||'')){CSP=true;const b=$('mapBox');if(b)b.classList.add('blk')}});
+function mapa(p){const q=encodeURIComponent(p.calle+', '+cfg.ciudad),off=!navigator.onLine;
+const svg='<svg viewBox="0 0 400 150" preserveAspectRatio="xMidYMid slice"><rect width="400" height="150" fill="var(--inp)"/><path d="M0 60H400M0 112H400M110 0V150M270 0V150" stroke="#f59e0b" stroke-width="9" opacity=".4"/><g transform="translate(190 86)"><ellipse cy="2" rx="13" ry="4" opacity=".25"/><g class="pin"><path d="M0 0C-22-26-22-48 0-48S22-26 0 0Z" fill="#ef4444"/><circle cy="-32" r="8" fill="#fff"/></g></g></svg>';
+/* el mapa va EN la app (iframe aislado: sin allow-top-navigation no puede reemplazar la pantalla de la app) */
+abrir('Ubicación de '+p.batea,'<div class="mapa" id="mapBox">'+svg+'<div class="blkmsg">🔒 Este visor bloquea los mapas externos.<br>En la app instalada (APK) el mapa se ve acá. Mientras tanto usá «Ver en Maps» o «Copiar dirección».</div>'+(off?'':'<iframe id="mapFr" title="Mapa" sandbox="allow-scripts allow-same-origin" referrerpolicy="no-referrer" src="https://maps.google.com/maps?q='+q+'&hl=es&z=16&output=embed"></iframe>')+'</div>'+
+'<p style="margin:0 0 4px">📍 <b>'+esc(p.calle)+'</b><br><small>'+esc(cfg.ciudad)+(off?' · sin conexión: el mapa aparece cuando vuelva la señal':'')+'</small></p>'+
+'<div class="g2"><button class="btn pri" id="bVer">📍 Ver en Maps</button><button class="btn pri" id="bGuiar">🧭 Guiar</button><button class="btn" id="bCopy">📋 Copiar dirección</button><button class="btn" id="bOsm"'+(off?' disabled':'')+'>🗺️ OpenStreetMap</button></div>',[{txt:'Cerrar'}]);
+const ext=async(web,nat)=>{if(!(await abrirUrl(web,nat)))toast('Abriendo Maps… si no se abre, tocá «Copiar dirección» y pegala en Maps.')};
+$('bVer').onclick=()=>ext('https://www.google.com/maps/search/?api=1&query='+q,'geo:0,0?q='+q);
+$('bGuiar').onclick=()=>ext('https://www.google.com/maps/dir/?api=1&destination='+q+'&travelmode=driving','google.navigation:q='+q);
+$('bCopy').onclick=()=>copiar(p.calle+', '+cfg.ciudad);
+$('bOsm').onclick=async()=>{try{const j=await(await fetch('https://nominatim.openstreetmap.org/search?format=json&limit=1&q='+q)).json();if(!j.length)throw 0;const la=+j[0].lat,lo=+j[0].lon,d=.004;
+$('mapFr').src='https://www.openstreetmap.org/export/embed.html?bbox='+[lo-d,la-d,lo+d,la+d].join('%2C')+'&layer=mapnik&marker='+la+'%2C'+lo}catch(e){toast(e===0?'No se encontró la dirección en OpenStreetMap.':'No se pudo cargar OpenStreetMap (sin internet o bloqueado por el visor).')}}}
+async function copiar(t){try{await navigator.clipboard.writeText(t)}catch(e){try{const a=document.createElement('textarea');a.value=t;a.style.cssText='position:fixed;opacity:0';document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}catch(x){toast('No se pudo copiar.');return}}toast('Dirección copiada ✔')}
+/* Abre un enlace externo SIN reemplazar la app: Capacitor (Browser o intent), WebView simple (conversor): intento en iframe oculto, o navegador normal */
+function intentoExterno(u){try{const f=document.createElement('iframe');f.style.cssText='position:absolute;width:0;height:0;border:0;visibility:hidden';f.src=u;document.body.appendChild(f);setTimeout(()=>f.remove(),4000)}catch(e){}}
+async function abrirUrl(web,nativo){const C=window.Capacitor,B=C&&C.Plugins&&C.Plugins.Browser;
+if(B){try{await B.open({url:web});return true}catch(e){}}
+if(C&&C.isNativePlatform&&C.isNativePlatform()){try{location.href=nativo;return true}catch(e){}}
+if(CSP){try{const a=document.createElement('a');a.href=web;a.target='_blank';a.rel='noopener noreferrer';document.body.appendChild(a);a.click();a.remove()}catch(e){}return false}
+if(/; wv\)/.test(navigator.userAgent)){intentoExterno(nativo);return false}
+window.open(web,'_blank','noopener');return true}
+/* ---- render ---- */
+const bClase={'Para Entregar':'est-entrega','En Calle':'est-obra','Para Buscar':'est-retirar','Vaciar en Basural':'est-basural'},pClase={Pendiente:'pago-pendiente',Señado:'pago-sena',Pagado:'pago-pagado'};
+function render(){
+const n=f=>pedidos.filter(p=>p.estado===f).length;$('cEnt').textContent=n(ESTADOS[0]);$('cObr').textContent=n(ESTADOS[1]);$('cRet').textContent=n(ESTADOS[2]);$('cBas').textContent=n(ESTADOS[3]);
+let co=0,pe=0;pedidos.forEach(p=>{const m=Number(p.precio)||0;if(p.estadoPago==='Pagado')co+=m;else if(p.estadoPago==='Señado'){co+=m/2;pe+=m/2}else pe+=m});$('tCob').textContent=moneda(co);$('tPen').textContent=moneda(pe);
+const tx=$('fTxt').value.trim().toLowerCase(),fe=$('fEst').value,fp=$('fPag').value,rk=p=>p.estado===ESTADOS[3]?-1:venc(p).n;
+const l=pedidos.filter(p=>[p.calle,p.batea,p.cliente].join(' ').toLowerCase().includes(tx)&&(fe==='TODOS'||p.estado===fe)&&(fp==='TODOS'||p.estadoPago===fp)).sort((a,b)=>rk(b)-rk(a));
+$('vacio').hidden=l.length>0;
+$('lista').innerHTML=l.map(p=>{const v=venc(p),lv=v.n>=3?'lr':v.n===2?'la':v.n===1?'lg':'';
+return '<article class="card '+lv+'"><div class="top"><b class="bid">'+esc(p.batea)+'</b><span class="badge '+bClase[p.estado]+'">'+esc(p.estado)+'</span><span class="badge '+pClase[p.estadoPago]+'">'+esc(p.estadoPago)+'</span></div>'+
+'<div class="cli">'+esc(p.cliente)+'</div><div class="row">📍 '+esc(p.calle)+'</div><div class="row">🕒 Ent <b>'+esc(p.horaEntrega)+'</b> · 🚚 Ret <b>'+esc(p.horaRetiro)+'</b></div>'+
+'<div class="row"><span class="badge '+(p.tipoCarga==='Basura'?'tipo-basura':'tipo-escombro')+'">'+esc(p.tipoCarga)+'</span><span class="precio">'+moneda(p.precio)+'</span><small>'+esc(p.medioPago||'')+'</small></div>'+
+(v.n?'<div class="seg">'+[1,2,3].map(i=>'<i'+(v.n>=i?' class="on"':'')+'></i>').join('')+'</div>':'')+
+'<div class="row"><span class="badge '+v.c+'">'+v.t+'</span><small>'+(p.fechaEntrega?'Entrega '+fechaCorta(p.fechaEntrega):'')+'</small></div>'+
+'<div class="acts"><button data-a="pago" data-id="'+p.id+'"><span>💵</span>Cobro</button><button data-a="estado" data-id="'+p.id+'"><span>🔄</span>Estado</button><button data-a="mapa" data-id="'+p.id+'"><span>📍</span>Mapa</button><button data-a="precio" data-id="'+p.id+'"><span>✏️</span>Precio</button><button data-a="del" data-id="'+p.id+'"><span>🗑️</span>Borrar</button></div></article>'}).join('');
+avisos()}
+$('lista').addEventListener('click',e=>{const b=e.target.closest('button[data-a]');if(!b)return;const p=pedidos.find(x=>x.id===Number(b.dataset.id));if(!p)return;const a=b.dataset.a;
+if(a==='pago')p.estadoPago=PAGOS[(PAGOS.indexOf(p.estadoPago)+1)%3];else if(a==='estado')p.estado=ESTADOS[(ESTADOS.indexOf(p.estado)+1)%4];
+else return a==='precio'?precioDlg(p):a==='del'?eliminarDlg(p):mapa(p);persistir()});
+['fTxt','fEst','fPag'].forEach(id=>$(id).addEventListener(id==='fTxt'?'input':'change',render));
+$('fab').onclick=nuevo;$('bAjustes').onclick=ajustes;$('dot').onclick=e=>{e.stopPropagation();ajustes()};
+$('fecha').textContent=new Date().toLocaleDateString('es-AR',{weekday:'long',day:'numeric',month:'long'});
+addEventListener('offline',()=>toast('Sin conexión: todo se guarda en el equipo'));addEventListener('online',()=>toast('Conexión recuperada'));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden){render();programar();tick()}});
+render();uiAvisos();programar();tick();setInterval(tick,30000);setInterval(render,600000);
+</script>
+</body>
+</html>
